@@ -3,12 +3,14 @@ package se.kth.anderslm.ttt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
 import java.util.Locale;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ticLogic = TicLogic.getInstance(); // singleton
-        updateImageViews(); // game might already be started, so update image views
+        updateImageViews(null); // game might already be started, so update image views
     }
 
     // NB! Cancel the current and queued utterances, then shut down the service to
@@ -73,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void onImageViewTap(View view) {
+    public void onImageViewTap(View tappedView) {
         // the image views in the activity_main file is marked with tags, 0-8
-        int index = Integer.parseInt(view.getTag().toString());
+        int index = Integer.parseInt(tappedView.getTag().toString());
         // calculate corresponding row and column
         int row = index / SIZE;
         int col = index % SIZE;
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         if (ticLogic.isLegalMove(row, col)) {
             ticLogic.makeMove(row, col);
             // update the image views
-            updateImageViews();
+            updateImageViews(tappedView);
             // TODO: Animate view
 
             if (ticLogic.isDecided()) {
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ui helpers
-    private void updateImageViews() {
+    private void updateImageViews(View tappedView) {
         Player[][] board = ticLogic.getCopyOfBoard();
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) {
@@ -136,7 +138,11 @@ public class MainActivity extends AppCompatActivity {
                     case NONE:
                         img = null;
                 }
-                imageViews[r * SIZE + c].setImageDrawable(img); // index in array imageViews
+                int index = r * SIZE + c;
+                imageViews[index].setImageDrawable(img); // index in array imageViews
+                if(imageViews[index]== tappedView) {
+                    AnimationUtils.fadeInImageView(tappedView);
+                }
             }
         }
     }
@@ -170,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        // to prevent the status bar to reappear in landscape mode when,
+        // to prevent the staus bar from reappearing in landscape mode when,
         // for example, a dialog is shown
         if(hasFocus) TicActivityUtils.setStatusBarHiddenInLandscapeMode(this);
         Log.i("DEBUG","onWindowFocusChanged");
