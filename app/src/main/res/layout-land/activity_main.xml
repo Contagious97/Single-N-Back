@@ -9,7 +9,7 @@
 
     <!-- NB! switch between wrap_content/fill_parent
          for the layout_width and height in landscape mode -->
-    <se.kth.anderslm.ttt.SquareLayout
+    <se.kth.anderslm.ttt.view.SquareLayout
         android:id="@+id/squareLayout"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -125,7 +125,7 @@
                 android:tag="8" />
         </LinearLayout>
 
-    </se.kth.anderslm.ttt.SquareLayout>
+    </se.kth.anderslm.ttt.view.SquareLayout>
 
     <!-- Styling for the button is defined in res/drawable/rounded_green_bkg
      Use AppCompatButton, instead of Button, for this styling to take effect -->

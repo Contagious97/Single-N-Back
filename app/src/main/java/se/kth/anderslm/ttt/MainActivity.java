@@ -1,22 +1,22 @@
 package se.kth.anderslm.ttt;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
+import static se.kth.anderslm.ttt.model.TicLogic.Player;
+import static se.kth.anderslm.ttt.model.TicLogic.SIZE;
 
-import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
-import java.util.Locale;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import se.kth.anderslm.ttt.model.TicLogic;
-import static se.kth.anderslm.ttt.model.TicLogic.*;
+import se.kth.anderslm.ttt.utils.AnimationUtils;
+import se.kth.anderslm.ttt.utils.TextToSpeechUtil;
+import se.kth.anderslm.ttt.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,26 +25,23 @@ public class MainActivity extends AppCompatActivity {
     private ImageView[] imageViews;
     private Drawable crossDrawable, noughtDrawable;
 
-    private TextToSpeech textToSpeach;
-    private static final int utteranceId = 42;
+    private TextToSpeechUtil textToSpeechUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // ui stuff
         setContentView(R.layout.activity_main);
         imageViews = loadReferencesToImageViews();
+        findViewById(R.id.restartBtn).setOnClickListener(v -> onGameRestart());
+        textToSpeechUtil = new TextToSpeechUtil();  // also part of the user interface(!)
         // load drawables (images)
         Resources resources = getResources();
         crossDrawable = ResourcesCompat.getDrawable(resources, R.drawable.cross, null);
         noughtDrawable = ResourcesCompat.getDrawable(resources, R.drawable.nought, null);
-        findViewById(R.id.restartBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onGameRestart();
-            }
-        });
 
         ticLogic = TicLogic.getInstance(); // singleton
+
         updateImageViews(null); // game might already be started, so update image views
     }
 
@@ -52,10 +49,7 @@ public class MainActivity extends AppCompatActivity {
     // de-allocate resources
     @Override
     protected void onPause() {
-        if (textToSpeach != null) {
-            textToSpeach.stop();
-            textToSpeach.shutdown();
-        }
+        textToSpeechUtil.shutdown();
         super.onPause();
     }
 
@@ -64,15 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        textToSpeach = new TextToSpeech(getApplicationContext(),
-                new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS) {
-                            textToSpeach.setLanguage(Locale.UK);
-                        }
-                    }
-                });
+        textToSpeechUtil.initialize(getApplicationContext());
     }
 
     public void onImageViewTap(View tappedView) {
@@ -88,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
             ticLogic.makeMove(row, col);
             // update the image views
             updateImageViews(tappedView);
-            // TODO: Animate view
-
             if (ticLogic.isDecided()) {
                 String msg;
                 switch (ticLogic.getWinner()) {
@@ -102,24 +86,18 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         msg = "A draw, try again";
                 }
-                TicActivityUtils.createDialog(this,"Game ower", msg).show();
-                sayIt(msg);
+                UiUtils.createDialog(this,"Game ower", msg).show();
+                textToSpeechUtil.speakNow(msg);
             }
         }
     }
 
     public void onGameRestart() {
         ticLogic.reset();
-        for (int i = 0; i < imageViews.length; i++) {
-            imageViews[i].setImageDrawable(null);
+        for (ImageView imageView : imageViews) {
+            imageView.setImageDrawable(null);
         }
-        sayIt("Restarting");
-    }
-
-    // text-to-speech - dellocate/allocate in onPause/onResume
-    private void sayIt(String utterance) {
-        textToSpeach.speak(utterance, TextToSpeech.QUEUE_FLUSH,
-                null, "" + utteranceId);
+        textToSpeechUtil.speakNow("Restarting");
     }
 
     // ui helpers
@@ -162,14 +140,9 @@ public class MainActivity extends AppCompatActivity {
         imgViews[7] = findViewById(R.id.imageView7);
         imgViews[8] = findViewById(R.id.imageView8);
         // add listener
-        View.OnClickListener imgViewListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onImageViewTap(view);
-            }
-        };
-        for(int i = 0; i <imgViews.length; i++){
-            imgViews[i].setOnClickListener(imgViewListener);
+        View.OnClickListener imgViewListener = view -> onImageViewTap(view);
+        for (ImageView imgView : imgViews) {
+            imgView.setOnClickListener(imgViewListener);
         }
         return imgViews;
     }
@@ -178,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // to prevent the staus bar from reappearing in landscape mode when,
         // for example, a dialog is shown
-        if(hasFocus) TicActivityUtils.setStatusBarHiddenInLandscapeMode(this);
-        Log.i("DEBUG","onWindowFocusChanged");
+        if(hasFocus) UiUtils.setStatusBarHiddenInLandscapeMode(this);
     }
 }

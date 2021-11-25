@@ -1,22 +1,19 @@
-package se.kth.anderslm.ttt;
+package se.kth.anderslm.ttt.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.view.View;
 
-public class TicActivityUtils {
+public class UiUtils {
 
     public static Dialog createDialog(Activity activity, String title, String msg) {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(activity);
         builder.setTitle(title);
         builder.setMessage(msg);
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
+        builder.setPositiveButton("Ok", (dialog, id) -> {
         });
         return builder.create();
     }

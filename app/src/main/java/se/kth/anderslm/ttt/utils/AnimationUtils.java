@@ -1,4 +1,4 @@
-package se.kth.anderslm.ttt;
+package se.kth.anderslm.ttt.utils;
 
 import android.animation.ValueAnimator;
 import android.view.View;
@@ -11,12 +11,9 @@ public class AnimationUtils {
         alphaAnimator.setDuration(2000);
         alphaAnimator.setInterpolator(new LinearInterpolator());
 
-        alphaAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float newAlpha = (float) valueAnimator.getAnimatedValue();
-                viewToFadeIn.setAlpha(newAlpha);
-            }
+        alphaAnimator.addUpdateListener(valueAnimator -> {
+            float newAlpha = (float) valueAnimator.getAnimatedValue();
+            viewToFadeIn.setAlpha(newAlpha);
         });
         alphaAnimator.start();
     }

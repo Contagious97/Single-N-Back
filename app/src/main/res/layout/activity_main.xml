@@ -7,7 +7,7 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <se.kth.anderslm.ttt.SquareLayout
+    <se.kth.anderslm.ttt.view.SquareLayout
         android:id="@+id/squareLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                 android:tag="8" />
         </LinearLayout>
 
-    </se.kth.anderslm.ttt.SquareLayout>
+    </se.kth.anderslm.ttt.view.SquareLayout>
 
     <!-- Styling for the button is defined in res/drawable/rounded_green_bkg
      Use AppCompatButton, instead of Button, for this styling to take effect -->

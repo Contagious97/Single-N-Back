@@ -1,4 +1,4 @@
-package se.kth.anderslm.ttt;
+package se.kth.anderslm.ttt.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
