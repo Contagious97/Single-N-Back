@@ -1,4 +1,4 @@
-package se.kth.anderslm.ttt.model;
+package se.kth.mohosm.ttt.model;
 
 public class TicLogic {
 

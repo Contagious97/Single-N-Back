@@ -1,7 +1,7 @@
-package se.kth.anderslm.ttt;
+package se.kth.mohosm.ttt;
 
-import static se.kth.anderslm.ttt.model.TicLogic.Player;
-import static se.kth.anderslm.ttt.model.TicLogic.SIZE;
+import static se.kth.mohosm.ttt.model.TicLogic.Player;
+import static se.kth.mohosm.ttt.model.TicLogic.SIZE;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
-import se.kth.anderslm.ttt.model.TicLogic;
-import se.kth.anderslm.ttt.utils.AnimationUtils;
-import se.kth.anderslm.ttt.utils.TextToSpeechUtil;
-import se.kth.anderslm.ttt.utils.UiUtils;
+import se.kth.mohosm.ttt.model.TicLogic;
+import se.kth.mohosm.ttt.utils.AnimationUtils;
+import se.kth.mohosm.ttt.utils.TextToSpeechUtil;
+import se.kth.mohosm.ttt.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
 

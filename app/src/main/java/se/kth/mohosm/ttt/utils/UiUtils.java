@@ -1,4 +1,4 @@
-package se.kth.anderslm.ttt.utils;
+package se.kth.mohosm.ttt.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;

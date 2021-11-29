@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "se.kth.anderslm.ttt"
+        applicationId 'se.kth.anderslm.ttt'
         minSdk 21
         targetSdk 31
         versionCode 1
