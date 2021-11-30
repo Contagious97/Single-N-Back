@@ -3,10 +3,12 @@ package se.kth.mohosm.ttt;
 import static se.kth.mohosm.ttt.model.TicLogic.Player;
 import static se.kth.mohosm.ttt.model.TicLogic.SIZE;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         updateImageViews(null); // game might already be started, so update image views
     }
 
-//    public void launchSettingsActivity(View view) {
-//        Log.d(LOG_TAG, "Settings in list clicked!");
-//        Intent intent = new Intent(this, SettingsActivity.class);
-//    }
+    public void launchSettingsActivity(View view) {
+        Log.d(LOG_TAG, "Settings in list clicked!");
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,50 +85,50 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == R.id.settings) {
-//            setContentView(R.layout.settings_activity);
-//        }
-//        if (item.getItemId() == R.id.home_button){
-//            setContentView(R.layout.activity_main);
-//        }
+
         Log.d(LOG_TAG,"Inside the onOptionsIntemSelected");
         switch (item.getItemId()){
-            case R.id.home:
-                setContentView(R.layout.activity_main);
-                break;
             case R.id.settings:
-                int ans2 = R.layout.settings_activity;
-                setContentView(R.layout.settings_activity);
-                seekBar = (SeekBar) findViewById(R.id.seekbar);
-                valueOfNTextView = (TextView) findViewById(R.id.nr_events_view);
-                seekBarTextView = (TextView) findViewById(R.id.nr_of_events_view);
-                dropdown = (Spinner) findViewById(R.id.spinner);
-                String[] items = new String[]{"10 Events","20 Events", "30 Events", "40 Events"};
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-                dropdown.setAdapter(adapter);
-                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        seekBarTextView.setText(progress + " seconds between events");
-                    }
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            default:return super.onOptionsItemSelected(item);
 
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
-                });
-                break;
         }
 
-
-
-        return super.onOptionsItemSelected(item);
+//        switch (item.getItemId()){
+//            case R.id.home:
+//                setContentView(R.layout.activity_main);
+//                break;
+//            case R.id.settings:
+//                int ans2 = R.layout.settings_activity;
+//                setContentView(R.layout.settings_activity);
+//                seekBar = (SeekBar) findViewById(R.id.seekbar);
+//                valueOfNTextView = (TextView) findViewById(R.id.nr_events_view);
+//                seekBarTextView = (TextView) findViewById(R.id.nr_of_events_view);
+//                dropdown = (Spinner) findViewById(R.id.spinner);
+//                String[] items = new String[]{"10 Events","20 Events", "30 Events", "40 Events"};
+//                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+//                dropdown.setAdapter(adapter);
+//                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//                    @RequiresApi(api = Build.VERSION_CODES.O)
+//                    @Override
+//                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                        seekBarTextView.setText(progress + " seconds between events");
+//                    }
+//
+//                    @Override
+//                    public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//                    }
+//                });
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
     }
 
     // NB! Cancel the current and queued utterances, then shut down the service to
