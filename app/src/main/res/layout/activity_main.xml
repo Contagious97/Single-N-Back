@@ -7,6 +7,8 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+
+
     <se.kth.mohosm.ttt.view.SquareLayout
         android:id="@+id/squareLayout"
         android:layout_width="fill_parent"
