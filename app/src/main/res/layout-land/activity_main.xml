@@ -130,7 +130,7 @@
     <!-- Styling for the button is defined in res/drawable/rounded_green_bkg
      Use AppCompatButton, instead of Button, for this styling to take effect -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/restartBtn"
+        android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_blue_bkg"

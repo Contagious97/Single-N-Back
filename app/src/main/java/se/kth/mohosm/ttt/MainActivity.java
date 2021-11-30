@@ -30,6 +30,9 @@ import se.kth.mohosm.ttt.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG =
+            MainActivity.class.getSimpleName();
+
     private TicLogic ticLogic;
 
     private ImageView[] imageViews;
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // ui stuff
         setContentView(R.layout.activity_main);
         imageViews = loadReferencesToImageViews();
-        findViewById(R.id.restartBtn).setOnClickListener(v -> onGameRestart());
+        findViewById(R.id.start_btn).setOnClickListener(v -> onGameRestart());
         textToSpeechUtil = new TextToSpeechUtil();  // also part of the user interface(!)
         // load drawables (images)
         Resources resources = getResources();
@@ -65,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         updateImageViews(null); // game might already be started, so update image views
     }
 
+//    public void launchSettingsActivity(View view) {
+//        Log.d(LOG_TAG, "Settings in list clicked!");
+//        Intent intent = new Intent(this, SettingsActivity.class);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,38 +88,42 @@ public class MainActivity extends AppCompatActivity {
 //        if (item.getItemId() == R.id.home_button){
 //            setContentView(R.layout.activity_main);
 //        }
+        Log.d(LOG_TAG,"Inside the onOptionsIntemSelected");
         switch (item.getItemId()){
             case R.id.home:
                 setContentView(R.layout.activity_main);
                 break;
             case R.id.settings:
+                int ans2 = R.layout.settings_activity;
                 setContentView(R.layout.settings_activity);
+                seekBar = (SeekBar) findViewById(R.id.seekbar);
+                valueOfNTextView = (TextView) findViewById(R.id.nr_events_view);
+                seekBarTextView = (TextView) findViewById(R.id.nr_of_events_view);
+                dropdown = (Spinner) findViewById(R.id.spinner);
+                String[] items = new String[]{"10 Events","20 Events", "30 Events", "40 Events"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+                dropdown.setAdapter(adapter);
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        seekBarTextView.setText(progress + " seconds between events");
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
                 break;
         }
-        seekBar = (SeekBar) findViewById(R.id.seekbar);
-        valueOfNTextView = (TextView) findViewById(R.id.nr_events_view);
-        seekBarTextView = (TextView) findViewById(R.id.nr_of_events_view);
-        dropdown = (Spinner) findViewById(R.id.spinner);
-        String[] items = new String[]{"10 Events","20 Events", "30 Events", "40 Events"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarTextView.setText(progress + " seconds between events");
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
 
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
         return super.onOptionsItemSelected(item);
     }
