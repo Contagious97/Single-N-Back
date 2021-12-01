@@ -23,6 +23,12 @@
     <ListPreference
         android:summary="Choose the amount of events in a round"
         android:title="Events per round"
+        app:key="list"
+        app:useSimpleSummaryProvider="true" />
+
+    <DropDownPreference
+        android:summary="Choose the value of n"
+        android:title="Value of n"
         app:key="dropdown"
         app:useSimpleSummaryProvider="true" />
 

@@ -3,6 +3,7 @@ package se.kth.mohosm.ttt;
 import static se.kth.mohosm.ttt.model.TicLogic.Player;
 import static se.kth.mohosm.ttt.model.TicLogic.SIZE;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -45,14 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
     private TextToSpeechUtil textToSpeechUtil;
 
-    private SeekBar seekBar;
+    private TextView currentEventsCounter;
+    private TextView valueOfN;
+    private TextView selectedStimuli;
+    private TextView timeBetweenEvents;
 
-    private TextView seekBarTextView;
-
-    private TextView valueOfNTextView;
-
-    private Spinner dropdown;
-
+    @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String dropdown = preferences.getString("dropdown", "");
+
+        currentEventsCounter = (TextView) findViewById(R.id.curr_nr_events_text);
+        valueOfN = (TextView) findViewById(R.id.time_events_text);
+        selectedStimuli = (TextView) findViewById(R.id.sel_stimuli_text);
+        timeBetweenEvents = (TextView) findViewById(R.id.time_events_text);
 
         updateImageViews(null); // game might already be started, so update image views
     }

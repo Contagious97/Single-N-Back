@@ -48,18 +48,29 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         seekBar.setMin(500);
         seekBar.setValue(2500);
 
-        ListPreference drop = findPreference("dropdown");
-        drop.setEntries(new String[]{"10", "20", "30", "40"});
-        drop.setEntryValues(new String[]{"10", "20", "30", "40"});
-        drop.setDefaultValue("30");
+        ListPreference listEventRounds = findPreference("list");
+        listEventRounds.setEntries(new String[]{"10", "20", "30", "40"});
+        listEventRounds.setEntryValues(new String[]{"10", "20", "30", "40"});
+        listEventRounds.setDefaultValue("10");
 
-        Preference listPreference = getPreferenceManager().findPreference("dropdown");
-        assert listPreference != null;
-        listPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+        DropDownPreference dropdownNValue = findPreference("dropdown");
+        dropdownNValue.setEntries(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+        dropdownNValue.setEntryValues(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+        dropdownNValue.setDefaultValue("1");
+
+
+
+        dropdownNValue.setOnPreferenceChangeListener((preference, newValue) -> {
+            String valueOfN = (String) newValue;
+            GameSettings.setValueOfN(Integer.parseInt(valueOfN));
+            Log.d(LOG_TAG, String.valueOf(GameSettings.getValueOfN()));
+            return true;
+        });
+
+        listEventRounds.setOnPreferenceChangeListener((preference, newValue) -> {
             String selectedNrOfEvents = (String) newValue;
             GameSettings.setNrOfEvents(Integer.parseInt(selectedNrOfEvents));
             Log.d(LOG_TAG, String.valueOf(GameSettings.getNrOfEvents()));
-            Log.d(LOG_TAG, selectedNrOfEvents + " inside the onPreferenceChange");
             return true;
         });
 
@@ -74,7 +85,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             audioSwitch.setChecked(audioSwitch.isChecked());
 
             GameSettings.setAudioStimuli(audioSwitch.isChecked());
-            Log.d(LOG_TAG,String.valueOf(GameSettings.isAudioStimuli()));
+            Log.d(LOG_TAG, String.valueOf(GameSettings.isAudioStimuli()));
             return true;
         });
 
@@ -82,7 +93,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             patternSwitch.setChecked(patternSwitch.isChecked());
 
             GameSettings.setPatternStimuli(patternSwitch.isChecked());
-            Log.d(LOG_TAG,String.valueOf(GameSettings.isPatternStimuli()));
+            Log.d(LOG_TAG, String.valueOf(GameSettings.isPatternStimuli()));
             return true;
         });
     }

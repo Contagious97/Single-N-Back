@@ -5,8 +5,17 @@ public class GameSettings {
     private static boolean patternStimuli;
     private static int timeBetweenEvents;
     private static int nrOfEvents;
+    private static int valueOfN;
 
     private GameSettings() {
+    }
+
+    public static int getValueOfN() {
+        return valueOfN;
+    }
+
+    public static void setValueOfN(int valueOfN) {
+        GameSettings.valueOfN = valueOfN;
     }
 
     public static boolean isAudioStimuli() {
