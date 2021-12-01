@@ -132,11 +132,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Restart"
+        android:text="@string/restart_button"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/squareLayout" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/guessBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_blue_bkg"
+        android:text="@string/guess_button"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/restartBtn"
         app:layout_constraintTop_toBottomOf="@+id/squareLayout" />
 
 

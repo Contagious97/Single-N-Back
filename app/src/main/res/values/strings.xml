@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TicTacToeImageViews</string>
+    <string name="restart_button">Restart </string>
+    <string name="guess_button">Guess </string>
 </resources>
