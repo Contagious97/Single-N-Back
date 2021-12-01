@@ -4,6 +4,7 @@ import static se.kth.mohosm.ttt.model.TicLogic.Player;
 import static se.kth.mohosm.ttt.model.TicLogic.SIZE;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -24,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SeekBarPreference;
 
 import se.kth.mohosm.ttt.model.TicLogic;
 import se.kth.mohosm.ttt.utils.AnimationUtils;
@@ -65,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         ticLogic = TicLogic.getInstance(); // singleton
 
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String dropdown = preferences.getString("dropdown", "");
 
         updateImageViews(null); // game might already be started, so update image views
     }
@@ -92,43 +96,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:return super.onOptionsItemSelected(item);
-
         }
+    }
 
-//        switch (item.getItemId()){
-//            case R.id.home:
-//                setContentView(R.layout.activity_main);
-//                break;
-//            case R.id.settings:
-//                int ans2 = R.layout.settings_activity;
-//                setContentView(R.layout.settings_activity);
-//                seekBar = (SeekBar) findViewById(R.id.seekbar);
-//                valueOfNTextView = (TextView) findViewById(R.id.nr_events_view);
-//                seekBarTextView = (TextView) findViewById(R.id.nr_of_events_view);
-//                dropdown = (Spinner) findViewById(R.id.spinner);
-//                String[] items = new String[]{"10 Events","20 Events", "30 Events", "40 Events"};
-//                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//                dropdown.setAdapter(adapter);
-//                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//                    @RequiresApi(api = Build.VERSION_CODES.O)
-//                    @Override
-//                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                        seekBarTextView.setText(progress + " seconds between events");
-//                    }
-//
-//                    @Override
-//                    public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//                    }
-//                });
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
     }
 
     // NB! Cancel the current and queued utterances, then shut down the service to

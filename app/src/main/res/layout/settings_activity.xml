@@ -73,7 +73,7 @@
 <!--                android:progress="1000"-->
 <!--                android:scaleX="2"-->
 <!--                android:scaleY="2">-->
-<!--            </SeekBar>-->
+<!--            </SeekBar-->
 
 <!--            <View-->
 <!--                android:id="@+id/view10"-->

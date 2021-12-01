@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
         android:defaultValue="false"
@@ -15,14 +15,19 @@
 
     <SeekBarPreference
         android:key="time_interval_component"
-        android:max="5000"
-        android:min="500"
         android:selectAllOnFocus="true"
-        android:defaultValue="2000"
         android:singleLine="true"
-        android:summary="Drag to the right or the left to increase and decrease the time between events"
-        android:title="Time between events"
-        app:min="500"
-        app:seekBarIncrement="100" />
+        android:summary="Drag to the right or the left to increase or decrease the time between events. Time is in milliseconds."
+        android:title="Time between events" />
+
+    <ListPreference
+        android:summary="Choose the amount of events in a round"
+        android:title="Events per round"
+        app:key="dropdown"
+        app:useSimpleSummaryProvider="true" />
+
+    <!--    app:entries="@array/entries"-->
+    <!--    app:entryValues="@array/entry_values"/>-->
+
 
 </PreferenceScreen>
