@@ -1,0 +1,101 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <Switch-->
+<!--                android:id="@+id/audio_match_switch"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="Audio Match"-->
+<!--                android:typeface="sans"-->
+<!--                tools:ignore="UseSwitchCompatOrMaterialXml" />-->
+
+<!--            <Switch-->
+<!--                android:id="@+id/position_match_switch"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="Position Match"-->
+<!--                android:typeface="sans"-->
+<!--                tools:ignore="UseSwitchCompatOrMaterialXml" />-->
+
+<!--            <View-->
+<!--                android:id="@+id/view7"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:background="@android:color/black" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/time_between_event_text"-->
+<!--                style="@style/Widget.AppCompat.TextView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="Time Between events"-->
+<!--                android:textSize="14sp"-->
+<!--                android:typeface="sans" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/nr_of_events_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="1000 Milliseconds between events"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textSize="16sp"-->
+<!--                android:typeface="sans"/>-->
+
+<!--            <SeekBar-->
+<!--                android:id="@+id/seekbar"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:layout_marginBottom="15dp"-->
+<!--                android:max="2000"-->
+<!--                android:min="100"-->
+<!--                android:progress="1000"-->
+<!--                android:scaleX="2"-->
+<!--                android:scaleY="2">-->
+<!--            </SeekBar-->
+
+<!--            <View-->
+<!--                android:id="@+id/view10"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:background="@android:color/black" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/nr_events_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="Total number of events in a round" />-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/spinner"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@android:drawable/btn_dropdown"-->
+<!--                android:spinnerMode="dropdown"-->
+<!--                tools:ignore="SpeakableTextPresentCheck" />-->
+
+<!--        </LinearLayout>-->
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

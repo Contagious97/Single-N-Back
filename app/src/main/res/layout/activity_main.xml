@@ -7,14 +7,15 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+
     <se.kth.mohosm.ttt.view.SquareLayout
         android:id="@+id/squareLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginTop="70dp"
         android:background="@drawable/layout_border_bkg"
+        android:orientation="vertical"
         android:padding="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -127,29 +128,102 @@
 
     <!-- Styling for the button is defined in res/drawable/rounded_green_bkg
      Use AppCompatButton, instead of Button, for this styling to take effect -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/restartBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_blue_bkg"
-        android:text="@string/restart_button"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/guessBtn"
+        android:id="@+id/position_match_btn"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/rounded_blue_bkg"
+        android:text="Position Match"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
+        app:layout_constraintVertical_bias="0.257" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/restart_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="@string/guess_button"
+        android:text="Restart"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/restartBtn"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
+        app:layout_constraintVertical_bias="0.514" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/start_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_blue_bkg"
+        android:text="Start"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restart_btn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/audio_match_btn"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_blue_bkg"
+        android:text="Audio Match"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
+        app:layout_constraintVertical_bias="0.257" />
+
+    <TextView
+        android:id="@+id/curr_nr_events_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Current number of events:"
+
+        app:layout_constraintBottom_toTopOf="@+id/time_events_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/time_events_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:padding="5dp"
+        android:text="Time between events:"
+        app:layout_constraintBottom_toTopOf="@+id/squareLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/curr_nr_events_text" />
+
+    <TextView
+        android:id="@+id/sel_stimuli_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="53dp"
+        android:padding="5dp"
+        android:text="Selected stimuli:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:padding="5dp"
+        android:text="Value of n:"
+        app:layout_constraintBottom_toTopOf="@+id/squareLayout"
+        app:layout_constraintStart_toStartOf="@+id/sel_stimuli_text"
+        app:layout_constraintTop_toBottomOf="@+id/sel_stimuli_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

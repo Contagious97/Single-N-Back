@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private int score;
     private final int rounds = 6;
+    private boolean visualStimuliPressed;
+    private boolean gameStarted;
 
 
     @Override
@@ -50,31 +52,28 @@ public class MainActivity extends AppCompatActivity {
         // ui stuff
         setContentView(R.layout.activity_main);
         imageViews = loadReferencesToImageViews();
-        findViewById(R.id.restartBtn).setOnClickListener(v -> onGameRestart());
-        findViewById(R.id.guessBtn).setOnClickListener(v -> onGuess());
+        findViewById(R.id.restart_btn).setOnClickListener(v -> onGameRestart());
+        findViewById(R.id.position_match_btn).setOnClickListener(v -> onGuess());
+        findViewById(R.id.start_btn).setOnClickListener(v -> onGameStart());
 
         textToSpeechUtil = new TextToSpeechUtil();  // also part of the user interface(!)
         // load drawables (images)
         Resources resources = getResources();
-        crossDrawable = ResourcesCompat.getDrawable(resources, R.drawable.cross, null);
-        noughtDrawable = ResourcesCompat.getDrawable(resources, R.drawable.nought, null);
+
         blueDrawable = ResourcesCompat.getDrawable(resources,R.drawable.img_blue,null);
-
-        ticLogic = TicLogic.getInstance(); // singleton
-
-        updateImageViews(null); // game might already be started, so update image views
 
         msgTimer = null;
         handler = new Handler();
         gameLogic = new GameLogic(2,rounds);
-        gameLogic.start();
         score = 0;
+        gameStarted = false;
     }
 
     // NB! Cancel the current and queued utterances, then shut down the service to
     // de-allocate resources
     @Override
     protected void onPause() {
+        Log.i(TAG,"On pause");
         textToSpeechUtil.shutdown();
         super.onPause();
         cancelTimer();
@@ -85,84 +84,41 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        startTimer();
+        Log.i(TAG,"On resume");
+        if (gameStarted){
+            boolean started = startTimer();
+            if (!started)
+                Log.i(TAG,"Timer already started");
+        }
         textToSpeechUtil.initialize(getApplicationContext());
     }
 
-    public void onImageViewTap(View tappedView) {
-        // the image views in the activity_main file is marked with tags, 0-8
-        int index = Integer.parseInt(tappedView.getTag().toString());
-        // calculate corresponding row and column
-        int row = index / SIZE;
-        int col = index % SIZE;
-        Log.i("Tag", "" + row + "," + col);
-
-        // update logic
-        if (ticLogic.isLegalMove(row, col)) {
-            ticLogic.makeMove(row, col);
-            // update the image views
-            updateImageViews(tappedView);
-            if (ticLogic.isDecided()) {
-                String msg;
-                switch (ticLogic.getWinner()) {
-                    case CROSS:
-                        msg = "Cross won, congratulations";
-                        break;
-                    case NOUGHT:
-                        msg = "Nought won, congratulations";
-                        break;
-                    default:
-                        msg = "A draw, try again";
-                }
-                UiUtils.createDialog(this,"Game ower", msg).show();
-                textToSpeechUtil.speakNow(msg);
-            }
-        }
+    private void onGameStart(){
+        gameLogic.start();
+        startTimer();
+        gameStarted = true;
+        score = 0;
     }
 
     public void onGameRestart() {
-        ticLogic.reset();
-        for (ImageView imageView : imageViews) {
-            imageView.setImageDrawable(null);
-        }
+
         textToSpeechUtil.speakNow("Restarting");
         cancelTimer();
         gameLogic.reset();
         gameLogic.start();
         startTimer();
+        score = 0;
     }
 
     public void onGuess(){
 
-        if (gameLogic.isCorrectGuess()){
+        visualStimuliPressed = true;
+
+        /*if (gameLogic.isCorrectGuess()){
             score++;
-        }
+        }*/
     }
 
-    // ui helpers
-    private void updateImageViews(View tappedView) {
-        Player[][] board = ticLogic.getCopyOfBoard();
-        for (int r = 0; r < SIZE; r++) {
-            for (int c = 0; c < SIZE; c++) {
-                Drawable img = null;
-                switch (board[r][c]) {
-                    case CROSS:
-                        img = crossDrawable;
-                        break;
-                    case NOUGHT:
-                        img = noughtDrawable;
-                        break;
-                    case NONE:
-                        img = null;
-                }
-                int index = r * SIZE + c;
-                imageViews[index].setImageDrawable(img); // index in array imageViews
-                if(imageViews[index]== tappedView) {
-                    AnimationUtils.fadeInImageView(tappedView);
-                }
-            }
-        }
-    }
 
     // load references to, and add listener on, all image views
     private ImageView[] loadReferencesToImageViews() {
@@ -178,11 +134,7 @@ public class MainActivity extends AppCompatActivity {
         imgViews[6] = findViewById(R.id.imageView6);
         imgViews[7] = findViewById(R.id.imageView7);
         imgViews[8] = findViewById(R.id.imageView8);
-        // add listener
-        View.OnClickListener imgViewListener = view -> onImageViewTap(view);
-        for (ImageView imgView : imgViews) {
-            imgView.setOnClickListener(imgViewListener);
-        }
+
         return imgViews;
     }
 
@@ -190,19 +142,38 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // to prevent the staus bar from reappearing in landscape mode when,
         // for example, a dialog is shown
+        Log.i(TAG,"Window focus changed");
         if(hasFocus) UiUtils.setStatusBarHiddenInLandscapeMode(this);
     }
 
     private class MsgTimerTask extends TimerTask {
         public void run() {
             noOfMsgs++;
-            String msg = "Curr pos: " + gameLogic.getPosition();
-            Log.i("MsgTask", msg);
-            if (gameLogic.getCurrPosition()!= 0)
-                imageViews[gameLogic.getPrevPosition()].setImageDrawable(null);
 
-            imageViews[gameLogic.getPosition()].setImageDrawable(blueDrawable);
-            gameLogic.makeMove();
+            if (visualStimuliPressed){
+                if (gameLogic.isCorrectGuess()){
+                    score++;
+                }
+
+                visualStimuliPressed = false;
+            }
+
+            if (gameLogic.gameOver()) {
+
+                textToSpeechUtil.speakNow("Your score: " + score);
+                Log.i(TAG,"Score: "+score);
+                cancelTimer();
+            } else {
+                gameLogic.makeMove();
+                String msg = "Curr pos: " + gameLogic.getPosition();
+                Log.i("MsgTask", msg);
+                if (gameLogic.getPrevValue() > -1)
+                    imageViews[gameLogic.getPrevValue()].setImageDrawable(null);
+
+                imageViews[gameLogic.getPosition()].setImageDrawable(blueDrawable);
+            }
+
+
             // post message to main thread
             handler.post(new Runnable() {
                 @Override
@@ -212,11 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     //msgTimer.schedule(new MsgTimerTask(),50,500);
                 }
             });
-            if (gameLogic.gameOver()) {
-                textToSpeechUtil.speakNow("Your score: " + score);
-                Log.i(TAG,"Score: "+score);
-                cancelTimer();
-            }
+
         }
     }
 

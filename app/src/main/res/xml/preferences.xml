@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="audio_stimuli"
+        android:summary="Check box for audio stimuli test."
+        android:title="Audio Stimuli" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pattern_stimuli"
+        android:summary="Check box for pattern stimuli test."
+        android:title="Pattern Stimuli" />
+
+    <SeekBarPreference
+        android:key="time_interval_component"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Drag to the right or the left to increase or decrease the time between events. Time is in milliseconds."
+        android:title="Time between events" />
+
+    <ListPreference
+        android:summary="Choose the amount of events in a round"
+        android:title="Events per round"
+        app:key="dropdown"
+        app:useSimpleSummaryProvider="true" />
+
+    <!--    app:entries="@array/entries"-->
+    <!--    app:entryValues="@array/entry_values"/>-->
+
+
+</PreferenceScreen>

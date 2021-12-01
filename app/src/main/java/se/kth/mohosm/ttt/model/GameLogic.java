@@ -8,11 +8,12 @@ public class GameLogic {
 
     private int n_back;
     private int rounds;
-    private int[] positionHistory;
     private int[] positions;
+    private char[] auditory;
     private int currPosition;
     int score = 0;
     boolean gameStarted;
+    private boolean isAuditory;
 
     private static final String TAG = "GAME_LOGIC";
 
@@ -20,9 +21,20 @@ public class GameLogic {
         this.n_back = n_back;
         this.rounds = rounds;
         gameStarted = false;
+        isAuditory = false;
     }
 
 
+    private void generateAuditory(){
+        char letters[] = new char[]{'C','K','L','M','T','G','O'};
+        auditory = new char[rounds];
+        Random random = new Random();
+        int randomIndex = -1;
+        for (int i =0; i<auditory.length; i++){
+            randomIndex = random.nextInt(7);
+            auditory[i] = letters[randomIndex];
+        }
+    }
 
     private void generatePositions(){
         positions = new int[rounds];
@@ -36,7 +48,7 @@ public class GameLogic {
 
         int codedPositions2[] = new int[]{1,2,1,4,3,4};
         for (int i = 0; i<positions.length; i++){
-            if (rounds == 5)
+            if (rounds == 6)
                 positions[i] = codedPositions2[i];
             else
                 positions[i] = codedPosistions[i];
@@ -45,21 +57,27 @@ public class GameLogic {
     }
 
     public boolean isCorrectGuess(){
-        if (getN_backPosition() < 0)
-            return false;
-        Log.i(TAG,"Curr value: " + positions[getCurrPosition()]);
-        Log.i(TAG,"N-back value: " + getN_backPosition());
-        return positions[currPosition] == getN_backPosition();
+        if (isAuditory){
+            if (getN_backValue() < 0)
+                return false;
+            Log.i(TAG,"Curr value: " + auditory[currPosition]);
+            Log.i(TAG,"N-back value: " + getN_backValue());
+            return auditory[currPosition] == getN_backValue();
+        } else{
+            if (getN_backValue() < 0)
+                return false;
+            Log.i(TAG,"Curr value: " + positions[currPosition]);
+            Log.i(TAG,"N-back value: " + getN_backValue());
+            return positions[currPosition] == getN_backValue();
+        }
     }
 
     public void makeMove(){
-        if (currPosition == positions.length-1)
-            return;
         currPosition++;
     }
 
     public boolean gameOver(){
-        return currPosition == positions.length-1;
+        return currPosition == rounds;
     }
 
     public int getCurrPosition(){
@@ -69,22 +87,38 @@ public class GameLogic {
     public int getPosition(){
         if (currPosition> positions.length-1)
             return positions[positions.length -1];
+        if (currPosition == -1)
+            return -1;
         return positions[currPosition];
     }
 
-    public int getPrevPosition(){
+    public int getPrevValue(){
+        if (currPosition < 1)
+            return -1;
         return positions[currPosition-1];
     }
 
-    private int getN_backPosition(){
-        if (currPosition >= 2)
-            return positions[currPosition-2];
-        else return Integer.MIN_VALUE;
+
+
+    private int getN_backValue(){
+        if (isAuditory){
+            if (currPosition >= n_back){
+                return auditory[currPosition-n_back];
+            } else return Integer.MIN_VALUE;
+        }else{
+            if (currPosition >= n_back)
+                return positions[currPosition-n_back];
+            else return Integer.MIN_VALUE;
+        }
     }
 
     public void start(){
         gameStarted = true;
-        generatePositions();
+        if (isAuditory){
+            generateAuditory();
+        }else
+            generatePositions();
+
         currPosition = -1;
     }
 
@@ -92,7 +126,8 @@ public class GameLogic {
         for (int i = 0; i<positions.length; i++){
             positions[i] = 0;
         }
-        currPosition = 0;
+
+        currPosition = -1;
     }
 
 }
