@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Position Match"
+        android:text="@string/visual_btn_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Restart"
+        android:text="@string/restart_btn_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,7 +162,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Start"
+        android:text="@string/start_btn_text"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -175,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Audio Match"
+        android:text="@string/audio_btn_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -183,11 +183,21 @@
         app:layout_constraintVertical_bias="0.257" />
 
     <TextView
+        android:id="@+id/current_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/score_text"
+        app:layout_constraintStart_toEndOf="@id/position_match_btn"
+        app:layout_constraintEnd_toStartOf="@+id/audio_match_btn"
+        app:layout_constraintBottom_toTopOf="@id/restart_btn" />
+
+    <TextView
         android:id="@+id/curr_nr_events_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="Current number of events:"
+        android:text="@string/number_of_events"
 
         app:layout_constraintBottom_toTopOf="@+id/time_events_text"
         app:layout_constraintStart_toStartOf="parent"
@@ -199,7 +209,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:padding="5dp"
-        android:text="Time between events:"
+        android:text="@string/time_between_events"
         app:layout_constraintBottom_toTopOf="@+id/squareLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/curr_nr_events_text" />
@@ -208,21 +218,21 @@
         android:id="@+id/sel_stimuli_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="53dp"
         android:padding="5dp"
-        android:text="Selected stimuli:"
+        android:text="@string/selected_stimuli"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/curr_nr_events_text"/>
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/value_of_n"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:padding="5dp"
-        android:text="Value of n:"
+        android:text="@string/value_of_n"
         app:layout_constraintBottom_toTopOf="@+id/squareLayout"
-        app:layout_constraintStart_toStartOf="@+id/sel_stimuli_text"
+        app:layout_constraintStart_toEndOf="@+id/time_events_text"
         app:layout_constraintTop_toBottomOf="@+id/sel_stimuli_text" />
 
 

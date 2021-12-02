@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TicTacToeImageViews</string>
+    <string name="app_name">Single-N-Back app</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
@@ -16,5 +16,13 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-
+    <string name="number_of_events">Number of events: </string>
+    <string name="value_of_n">Value of N: </string>
+    <string name="selected_stimuli">Selected: </string>
+    <string name="time_between_events">Time between events: </string>
+    <string name="audio_btn_text">Audio match</string>
+    <string name="visual_btn_text">Position match</string>
+    <string name="start_btn_text">Start </string>
+    <string name="restart_btn_text">Restart </string>
+    <string name="score_text">Score:</string>
 </resources>

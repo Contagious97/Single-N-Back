@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
@@ -19,6 +20,9 @@ import androidx.preference.SeekBarPreference;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG =
+            SettingsActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,4 +32,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
                 setContentView(R.layout.settings_activity);
     }
+
+
 }

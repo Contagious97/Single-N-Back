@@ -7,23 +7,18 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <!-- NB! switch between wrap_content/fill_parent
-         for the layout_width and height in landscape mode -->
+
     <se.kth.mohosm.ttt.view.SquareLayout
         android:id="@+id/squareLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/layout_border_bkg"
         android:orientation="vertical"
         android:padding="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <!--app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">-->
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -133,43 +128,44 @@
 
     <!-- Styling for the button is defined in res/drawable/rounded_green_bkg
      Use AppCompatButton, instead of Button, for this styling to take effect -->
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/position_match_btn"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="108dp"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Position Match"
+        android:text="@string/visual_btn_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
-        app:layout_constraintVertical_bias="0.257" />
+        app:layout_constraintEnd_toStartOf="@+id/squareLayout"
+        app:layout_constraintStart_toEndOf="@+id/start_btn" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/restart_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Restart"
+        android:text="@string/restart_btn_text"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
-        app:layout_constraintVertical_bias="0.514" />
+        app:layout_constraintTop_toBottomOf="@+id/value_of_n" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="109dp"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Start"
+        android:text="@string/start_btn_text"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restart_btn" />
 
@@ -177,14 +173,65 @@
         android:id="@+id/audio_match_btn"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="133dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="45dp"
         android:background="@drawable/rounded_blue_bkg"
-        android:text="Audio Match"
+        android:text="@string/audio_btn_text"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
-        app:layout_constraintVertical_bias="0.257" />
+        app:layout_constraintBottom_toTopOf="@+id/position_match_btn"
+        app:layout_constraintEnd_toStartOf="@+id/squareLayout"
+        app:layout_constraintStart_toEndOf="@+id/restart_btn"
+        app:layout_constraintTop_toBottomOf="@+id/curr_nr_events_text" />
+
+    <TextView
+        android:id="@+id/curr_nr_events_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/number_of_events"
+
+        app:layout_constraintBottom_toTopOf="@+id/time_events_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/time_events_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/time_between_events"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/curr_nr_events_text" />
+
+    <TextView
+        android:id="@+id/sel_stimuli_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/selected_stimuli"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_events_text" />
+
+    <TextView
+        android:id="@+id/value_of_n"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/value_of_n"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sel_stimuli_text" />
+
+    <TextView
+        android:id="@+id/current_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/score_text"
+        app:layout_constraintStart_toEndOf="@id/curr_nr_events_text"
+        app:layout_constraintEnd_toStartOf="@id/squareLayout"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

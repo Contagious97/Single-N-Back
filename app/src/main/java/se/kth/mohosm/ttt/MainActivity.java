@@ -1,38 +1,49 @@
 package se.kth.mohosm.ttt;
 
-import static se.kth.mohosm.ttt.model.TicLogic.Player;
-import static se.kth.mohosm.ttt.model.TicLogic.SIZE;
+import static se.kth.mohosm.ttt.model.GameLogic.SIZE;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.preference.PreferenceManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import se.kth.mohosm.ttt.model.GameLogic;
 import se.kth.mohosm.ttt.model.GameSettings;
-import se.kth.mohosm.ttt.model.TicLogic;
-import se.kth.mohosm.ttt.utils.AnimationUtils;
 import se.kth.mohosm.ttt.utils.TextToSpeechUtil;
-import se.kth.mohosm.ttt.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TicLogic ticLogic;
 
     private GameLogic gameLogic;
 
     private ImageView[] imageViews;
-    private Drawable crossDrawable, noughtDrawable, blueDrawable;
+    private Drawable blueDrawable;
+    private TextView currentEventsCounterTV;
+    private TextView valueOfNTV;
+    private TextView selectedStimuliTV;
+    private TextView timeBetweenEventsTV;
+    private TextView scoreTV;
+
+    private Button position_match_btn;
+    private Button audio_match_btn;
 
     private TextToSpeechUtil textToSpeechUtil;
 
@@ -42,16 +53,14 @@ public class MainActivity extends AppCompatActivity {
     private int noOfMsgs;
     private static final String TAG = "MainActivity";
     private int score;
-    private final int rounds = 6;
     private boolean visualStimuliPressed;
     private boolean auditoryStimuliPressed;
-    private boolean gameStarted;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // ui stuff
+        // initialize UI components
         setContentView(R.layout.activity_main);
         imageViews = loadReferencesToImageViews();
         findViewById(R.id.restart_btn).setOnClickListener(v -> onGameRestart());
@@ -60,19 +69,99 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.audio_match_btn).setOnClickListener(v -> onAuditoryGuess());
 
         textToSpeechUtil = new TextToSpeechUtil();  // also part of the user interface(!)
+        currentEventsCounterTV = (TextView) findViewById(R.id.curr_nr_events_text);
+        valueOfNTV = (TextView) findViewById(R.id.value_of_n);
+        selectedStimuliTV = (TextView) findViewById(R.id.sel_stimuli_text);
+        timeBetweenEventsTV = (TextView) findViewById(R.id.time_events_text);
+        scoreTV = (TextView) findViewById(R.id.current_score);
+
+        position_match_btn = (Button) findViewById(R.id.position_match_btn);
+        audio_match_btn = (Button) findViewById(R.id.audio_match_btn);
         // load drawables (images)
         Resources resources = getResources();
-
         blueDrawable = ResourcesCompat.getDrawable(resources,R.drawable.img_blue,null);
+
+        //load preferences
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String dropdown = preferences.getString("dropdown", "");
+
+
+
+
+        //default and initial gameSettings
+        GameSettings.setAudioStimuli(false);
+        GameSettings.setPatternStimuli(true);
+        GameSettings.setNrOfEvents(16);
+        GameSettings.setTimeBetweenEvents(2500);
+        GameSettings.setValueOfN(2);
+
+        currentEventsCounterTV.setText(R.string.number_of_events);
+        currentEventsCounterTV.append(" 0 of " + GameSettings.getNrOfEvents());
+        valueOfNTV.setText(R.string.value_of_n);
+        valueOfNTV.append("  " + GameSettings.getValueOfN());
+        selectedStimuliTV.setText(R.string.selected_stimuli);
+        selectedStimuliTV.append(" Visual Stimuli");
+        timeBetweenEventsTV.setText(R.string.time_between_events);
+        timeBetweenEventsTV.append(GameSettings.getTimeBetweenEvents() + " ms");
 
         msgTimer = null;
         handler = new Handler();
         gameLogic = GameLogic.getInstance();
         score = 0;
-        gameStarted = false;
         updateImageViews(null);
     }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
 
+        // get data from textViews
+        String valueOfN = valueOfNTV.getText().toString();
+        String currentEventsCounter = currentEventsCounterTV.getText().toString();
+        String timeBetweenEvents = timeBetweenEventsTV.getText().toString();
+        String selectedStimuli = selectedStimuliTV.getText().toString();
+
+        // tests so we can see that the right data is being saved in the later stage
+        Log.d(TAG, valueOfN);
+        Log.d(TAG, currentEventsCounter);
+        Log.d(TAG, timeBetweenEvents);
+        Log.d(TAG, selectedStimuli);
+
+        savedInstanceState.putString("value_of_n", valueOfN);
+        savedInstanceState.putString("curr_nr_events_text", currentEventsCounter);
+        savedInstanceState.putString("time_events_text", timeBetweenEvents);
+        savedInstanceState.putString("sel_stimuli_text", selectedStimuli);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.settings_view, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        Log.d(TAG, "Inside the onOptionsIntemSelected");
+        switch (item.getItemId()) {
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateScore(){
+        scoreTV.setText(R.string.score_text);
+        scoreTV.append(" ");
+        scoreTV.append(String.valueOf(score));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
     // NB! Cancel the current and queued utterances, then shut down the service to
     // de-allocate resources
     @Override
@@ -83,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
         cancelTimer();
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+    }
+
     // Initialize the text-to-speech service - we do this initialization
     // in onResume because we shutdown the service in onPause
     @Override
@@ -91,20 +185,41 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"On resume");
 
         Log.i(TAG,"Game started?: " + gameLogic.isGameStarted());
-        boolean started = startTimer();
-        if (!started)
-            Log.i(TAG,"Timer already started");
+        if (gameLogic.isGameStarted()){
+            updateCurrentEventCounter();
+            valueOfNTV.setText(R.string.value_of_n + GameSettings.getValueOfN());
+            selectedStimuliTV.setText(R.string.selected_stimuli);
+            timeBetweenEventsTV.setText(R.string.time_between_events + GameSettings.getTimeBetweenEvents());
+            timeBetweenEventsTV.append(" ms");
+            boolean started = startTimer();
+            if (!started)
+                Log.i(TAG,"Timer already started");
+
+        }
+
+        if (GameSettings.isPatternStimuli())
+            audio_match_btn.setVisibility(View.INVISIBLE);
+        else position_match_btn.setVisibility(View.INVISIBLE);
+
+
 
         textToSpeechUtil.initialize(getApplicationContext());
     }
 
+    private void updateCurrentEventCounter(){
+        currentEventsCounterTV.setText(R.string.number_of_events);
+        currentEventsCounterTV.append(" ");
+        int currentRound = gameLogic.getCurrPosition();
+        if (currentRound > 29)
+            currentRound = 30;
+        currentEventsCounterTV.append(String.valueOf(currentRound) + "of ");
+        currentEventsCounterTV.append(String.valueOf(GameSettings.getNrOfEvents()));
+    }
     private void updateImageViews(View view){
         if (gameLogic.isGameStarted()){
             if (gameLogic.getPosition() > -1)
                 imageViews[gameLogic.getPosition()].setImageDrawable(blueDrawable);
-        }
-
-
+        } else resetVisualStimuli();
     }
 
     private void resetVisualStimuli(){
@@ -117,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
     private void onGameStart(){
         gameLogic.start();
         startTimer();
-        gameStarted = true;
         score = 0;
         resetVisualStimuli();
     }
@@ -149,8 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
     // load references to, and add listener on, all image views
     private ImageView[] loadReferencesToImageViews() {
-        // well, it would probably be easier (for a larger matrix) to create
-        // the views in Java code and then add them to the appropriate layout
+
         ImageView[] imgViews = new ImageView[SIZE * SIZE];
         imgViews[0] = findViewById(R.id.imageView0);
         imgViews[1] = findViewById(R.id.imageView1);
@@ -167,8 +280,6 @@ public class MainActivity extends AppCompatActivity {
 
     /*@Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        // to prevent the staus bar from reappearing in landscape mode when,
-        // for example, a dialog is shown
         Log.i(TAG,"Window focus changed");
         if(hasFocus) UiUtils.setStatusBarHiddenInLandscapeMode(this);
     }*/
@@ -209,18 +320,16 @@ public class MainActivity extends AppCompatActivity {
 
                         imageViews[gameLogic.getPosition()].setImageDrawable(blueDrawable);
                     }
-
                 }
             }
-
-
 
             // post message to main thread
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     Log.i(TAG,"Nr msgs" + noOfMsgs);
-
+                    updateCurrentEventCounter();
+                    updateScore();
                     //msgTimer.schedule(new MsgTimerTask(),50,500);
                 }
             });
@@ -232,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
             noOfMsgs = 0;
             msgTimer = new Timer();
             // schedule a new task: task , delay, period (milliseconds)
-            msgTimer.schedule(new MsgTimerTask(), 4000, 2000);
+            msgTimer.schedule(new MsgTimerTask(), 3000, GameSettings.getTimeBetweenEvents());
 
             return true; // new task started
         }

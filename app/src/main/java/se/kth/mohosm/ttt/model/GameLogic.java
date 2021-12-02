@@ -13,8 +13,8 @@ public class GameLogic {
     private int currPosition;
     boolean gameStarted;
     private boolean isAuditory;
-    private GameSettings gameSettings;
     private final char letters[] = new char[]{'C','K','L','M','T','G','O'};
+    public static final int SIZE = 3;
 
 
     private static final String TAG = "GAME_LOGIC";
@@ -25,12 +25,12 @@ public class GameLogic {
         this.n_back = n_back;
         this.rounds = rounds;
         gameStarted = false;
-        isAuditory = false;
+        isAuditory = GameSettings.isAudioStimuli();
     }
 
     public static GameLogic getInstance(){
         if (gameLogic == null){
-            gameLogic = new GameLogic(2,6);
+            gameLogic = new GameLogic(GameSettings.getValueOfN(),GameSettings.getNrOfEvents());
         }
         return gameLogic;
     }
@@ -91,6 +91,8 @@ public class GameLogic {
     }
 
     public boolean gameOver(){
+        if (currPosition == rounds)
+            gameStarted = false;
         return currPosition == rounds;
     }
 
@@ -152,16 +154,17 @@ public class GameLogic {
 
     public void start(){
         gameStarted = true;
-        /*isAuditory = GameSettings.isAudioStimuli();
+        isAuditory = GameSettings.isAudioStimuli();
         if (isAuditory){
             generateAuditory();
         }else
-            generatePositions();*/
-        generatePositions();
-        //generateAuditory();
-        isAuditory = false;
-        //rounds = GameSettings.getNrOfEvents();
+            generatePositions();
 
+        //generateAuditory();
+        //isAuditory = false;
+        //rounds = GameSettings.getNrOfEvents();
+        rounds = GameSettings.getNrOfEvents();
+        n_back = GameSettings.getValueOfN();
         currPosition = -1;
     }
 
@@ -169,7 +172,7 @@ public class GameLogic {
         /*for (int i = 0; i<positions.length; i++){
             positions[i] = 0;
         }*/
-
+        gameStarted = true;
         currPosition = -1;
     }
 
