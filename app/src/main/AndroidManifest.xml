@@ -11,7 +11,7 @@
         android:theme="@style/Theme.TicTacToeImageViews" >
         <activity
             android:name=".SettingsActivity"
-            android:label="Second Activity"
+            android:label="Settings Activity"
             android:exported="false"/>
 <!--            android:label="@string/title_activity_settings" />-->
         <activity
