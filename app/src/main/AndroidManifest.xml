@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TicTacToeImageViews" >
+        android:theme="@style/Theme.TicTacToeImageViews">
         <activity
             android:name=".SettingsActivity"
             android:label="Second Activity"
@@ -17,6 +17,7 @@
         <activity
 
             android:name=".MainActivity"
+            android:screenOrientation="sensor"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
