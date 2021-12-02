@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         GameSettings.setTimeBetweenEvents(2500);
         GameSettings.setValueOfN(1);
 
-        currentEventsCounterTV.setText("Current number of events: " + "0 of " + GameSettings.getNrOfEvents());
+        currentEventsCounterTV.setText("Number of events: " + "0 of " + GameSettings.getNrOfEvents());
         valueOfNTV.setText("Value of n: " + GameSettings.getValueOfN());
         selectedStimuliTV.setText("Selected: No stimuli selected");
         timeBetweenEventsTV.setText("Time between events: " + GameSettings.getTimeBetweenEvents() + "ms");
@@ -193,6 +193,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        currentEventsCounterTV.setText("Number of events: " + "0 of " + GameSettings.getNrOfEvents());
+        valueOfNTV.setText("Value of n: " + GameSettings.getValueOfN());
+        selectedStimuliTV.setText("Selected: No stimuli selected");
+        timeBetweenEventsTV.setText("Time between events: " + GameSettings.getTimeBetweenEvents() + "ms");
         textToSpeechUtil.initialize(getApplicationContext());
     }
 
@@ -280,12 +284,5 @@ public class MainActivity extends AppCompatActivity {
             imgView.setOnClickListener(imgViewListener);
         }
         return imgViews;
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        // to prevent the staus bar from reappearing in landscape mode when,
-        // for example, a dialog is shown
-        if (hasFocus) UiUtils.setStatusBarHiddenInLandscapeMode(this);
     }
 }

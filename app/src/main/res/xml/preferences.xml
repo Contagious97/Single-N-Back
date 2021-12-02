@@ -21,12 +21,14 @@
         android:title="Time between events" />
 
     <ListPreference
+        android:defaultValue="20"
         android:summary="Choose the amount of events in a round"
         android:title="Events per round"
         app:key="list"
         app:useSimpleSummaryProvider="true" />
 
     <DropDownPreference
+        android:defaultValue="1"
         android:summary="Choose the value of n"
         android:title="Value of n"
         app:key="dropdown"

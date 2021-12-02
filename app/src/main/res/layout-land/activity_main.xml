@@ -10,14 +10,14 @@
 
     <se.kth.mohosm.ttt.view.SquareLayout
         android:id="@+id/squareLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_width="433dp"
+        android:layout_height="401dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/layout_border_bkg"
         android:orientation="vertical"
         android:padding="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -133,39 +133,39 @@
         android:id="@+id/position_match_btn"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="108dp"
         android:background="@drawable/rounded_blue_bkg"
         android:text="Position Match"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
-        app:layout_constraintVertical_bias="0.257" />
+        app:layout_constraintEnd_toStartOf="@+id/squareLayout"
+        app:layout_constraintStart_toEndOf="@+id/start_btn" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/restart_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/rounded_blue_bkg"
         android:text="Restart"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
-        app:layout_constraintVertical_bias="0.514" />
+        app:layout_constraintTop_toBottomOf="@+id/value_of_n" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="109dp"
         android:background="@drawable/rounded_blue_bkg"
         android:text="Start"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restart_btn" />
 
@@ -173,14 +173,17 @@
         android:id="@+id/audio_match_btn"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="133dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="45dp"
         android:background="@drawable/rounded_blue_bkg"
         android:text="Audio Match"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/squareLayout"
-        app:layout_constraintVertical_bias="0.257" />
+        app:layout_constraintBottom_toTopOf="@+id/position_match_btn"
+        app:layout_constraintEnd_toStartOf="@+id/squareLayout"
+        app:layout_constraintStart_toEndOf="@+id/restart_btn"
+        app:layout_constraintTop_toBottomOf="@+id/curr_nr_events_text" />
 
     <TextView
         android:id="@+id/curr_nr_events_text"
@@ -197,10 +200,8 @@
         android:id="@+id/time_events_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:padding="5dp"
         android:text="Time between events:"
-        app:layout_constraintBottom_toTopOf="@+id/squareLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/curr_nr_events_text" />
 
@@ -210,18 +211,16 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="Selected stimuli:"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_events_text" />
 
     <TextView
         android:id="@+id/value_of_n"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:padding="5dp"
         android:text="Value of n:"
-        app:layout_constraintBottom_toTopOf="@+id/squareLayout"
-        app:layout_constraintStart_toStartOf="@+id/sel_stimuli_text"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sel_stimuli_text" />
 
 

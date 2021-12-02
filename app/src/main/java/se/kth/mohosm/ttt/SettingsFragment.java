@@ -51,13 +51,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         ListPreference listEventRounds = findPreference("list");
         listEventRounds.setEntries(new String[]{"10", "20", "30", "40"});
         listEventRounds.setEntryValues(new String[]{"10", "20", "30", "40"});
-        listEventRounds.setDefaultValue("10");
 
         DropDownPreference dropdownNValue = findPreference("dropdown");
         dropdownNValue.setEntries(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
         dropdownNValue.setEntryValues(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
         dropdownNValue.setDefaultValue("1");
-
 
 
         dropdownNValue.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -82,18 +80,32 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         audioSwitch.setOnPreferenceClickListener(preference -> {
-            audioSwitch.setChecked(audioSwitch.isChecked());
 
-            GameSettings.setAudioStimuli(audioSwitch.isChecked());
-            Log.d(LOG_TAG, String.valueOf(GameSettings.isAudioStimuli()));
+            if (patternSwitch.isEnabled()) {
+                patternSwitch.setEnabled(false);
+                audioSwitch.setEnabled(true);
+
+            } else {
+                patternSwitch.setEnabled(true);
+                audioSwitch.setChecked(audioSwitch.isChecked());
+                GameSettings.setAudioStimuli(audioSwitch.isChecked());
+                Log.d(LOG_TAG, String.valueOf(GameSettings.isAudioStimuli()));
+            }
             return true;
         });
 
         patternSwitch.setOnPreferenceClickListener(preference -> {
-            patternSwitch.setChecked(patternSwitch.isChecked());
 
-            GameSettings.setPatternStimuli(patternSwitch.isChecked());
-            Log.d(LOG_TAG, String.valueOf(GameSettings.isPatternStimuli()));
+            if (audioSwitch.isEnabled()) {
+                audioSwitch.setEnabled(false);
+                patternSwitch.setChecked(true);
+
+            } else {
+                audioSwitch.setEnabled(true);
+                patternSwitch.setChecked(patternSwitch.isChecked());
+                GameSettings.setPatternStimuli(patternSwitch.isChecked());
+                Log.d(LOG_TAG, String.valueOf(GameSettings.isPatternStimuli()));
+            }
             return true;
         });
     }
