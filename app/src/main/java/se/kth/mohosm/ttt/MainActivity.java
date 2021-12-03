@@ -358,11 +358,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+
             // post message to main thread
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     Log.i(TAG,"Nr msgs" + noOfMsgs);
+
                     updateCurrentEventCounter();
                     updateScore();
                     //msgTimer.schedule(new MsgTimerTask(),50,500);

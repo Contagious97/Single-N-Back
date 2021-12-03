@@ -76,7 +76,7 @@ public class GameLogic {
                 return false;
             Log.i(TAG,"Curr value: " + auditory[currPosition== auditory.length?currPosition-1:currPosition]);
             Log.i(TAG,"N-back value: " + getN_backValue());
-            return auditory[currPosition== auditory.length?currPosition-1:currPosition] == getN_backValue();
+            return auditory[currPosition] == getN_backValue();
         } else{
             if (getN_backValue() < 0)
                 return false;
