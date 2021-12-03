@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView selectedStimuliTV;
     private TextView timeBetweenEventsTV;
     private TextView scoreTV;
+    private Animation animation;
 
     private Button position_match_btn;
     private Button audio_match_btn;
@@ -74,9 +78,13 @@ public class MainActivity extends AppCompatActivity {
         selectedStimuliTV = (TextView) findViewById(R.id.sel_stimuli_text);
         timeBetweenEventsTV = (TextView) findViewById(R.id.time_events_text);
         scoreTV = (TextView) findViewById(R.id.current_score);
+        animation = AnimationUtils.loadAnimation(this,R.anim.shake_animation);
+
 
         position_match_btn = (Button) findViewById(R.id.position_match_btn);
         audio_match_btn = (Button) findViewById(R.id.audio_match_btn);
+        position_match_btn.setAnimation(animation);
+        audio_match_btn.setAnimation(animation);
         // load drawables (images)
         Resources resources = getResources();
         blueDrawable = ResourcesCompat.getDrawable(resources,R.drawable.img_blue,null);
@@ -100,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         valueOfNTV.setText(R.string.value_of_n);
         valueOfNTV.append("  " + GameSettings.getValueOfN());
         selectedStimuliTV.setText(R.string.selected_stimuli);
-        selectedStimuliTV.append(" Visual Stimuli");
+        //selectedStimuliTV.append(" Visual Stimuli");
         timeBetweenEventsTV.setText(R.string.time_between_events);
         timeBetweenEventsTV.append(GameSettings.getTimeBetweenEvents() + " ms");
 
@@ -114,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        // get data from textViews
+        /*// get data from textViews
         String valueOfN = valueOfNTV.getText().toString();
         String currentEventsCounter = currentEventsCounterTV.getText().toString();
         String timeBetweenEvents = timeBetweenEventsTV.getText().toString();
@@ -129,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putString("value_of_n", valueOfN);
         savedInstanceState.putString("curr_nr_events_text", currentEventsCounter);
         savedInstanceState.putString("time_events_text", timeBetweenEvents);
-        savedInstanceState.putString("sel_stimuli_text", selectedStimuli);
+        savedInstanceState.putString("sel_stimuli_text", selectedStimuli);*/
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -175,6 +183,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
+        cancelTimer();
+        textToSpeechUtil.shutdown();
+    }
+
+    private void updateSelectedStimuli(){
+        selectedStimuliTV.setText(R.string.selected_stimuli);
+
+        if (GameSettings.isPatternStimuli()){
+            audio_match_btn.setVisibility(View.INVISIBLE);
+            selectedStimuliTV.append(" Visual");
+            position_match_btn.setVisibility(View.VISIBLE);
+        }
+        else {
+            position_match_btn.setVisibility(View.INVISIBLE);
+            selectedStimuliTV.append(" Auditory");
+            audio_match_btn.setVisibility(View.VISIBLE);
+        }
     }
 
     // Initialize the text-to-speech service - we do this initialization
@@ -187,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"Game started?: " + gameLogic.isGameStarted());
         if (gameLogic.isGameStarted()){
             updateCurrentEventCounter();
-            valueOfNTV.setText(R.string.value_of_n + GameSettings.getValueOfN());
+            valueOfNTV.setText(R.string.value_of_n);
+            valueOfNTV.append(String.valueOf(GameSettings.getValueOfN()));
             selectedStimuliTV.setText(R.string.selected_stimuli);
             timeBetweenEventsTV.setText(R.string.time_between_events + GameSettings.getTimeBetweenEvents());
             timeBetweenEventsTV.append(" ms");
@@ -196,22 +222,23 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG,"Timer already started");
 
         }
-
-        if (GameSettings.isPatternStimuli())
-            audio_match_btn.setVisibility(View.INVISIBLE);
-        else position_match_btn.setVisibility(View.INVISIBLE);
-
+        Log.i(TAG,"Visual stimuli? " + GameSettings.isPatternStimuli());
+        Log.i(TAG,"Audio stimuli? " + GameSettings.isAudioStimuli());
+        updateSelectedStimuli();
 
 
-        textToSpeechUtil.initialize(getApplicationContext());
+        if (textToSpeechUtil == null)
+            textToSpeechUtil = new TextToSpeechUtil();
     }
 
     private void updateCurrentEventCounter(){
         currentEventsCounterTV.setText(R.string.number_of_events);
         currentEventsCounterTV.append(" ");
         int currentRound = gameLogic.getCurrPosition();
-        if (currentRound > 29)
-            currentRound = 30;
+        /*if (currentRound >= GameSettings.getNrOfEvents())
+            currentRound = GameSettings.getNrOfEvents();*/
+        if (currentRound == -1)
+            currentRound = 0;
         currentEventsCounterTV.append(String.valueOf(currentRound) + "of ");
         currentEventsCounterTV.append(String.valueOf(GameSettings.getNrOfEvents()));
     }
@@ -230,10 +257,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onGameStart(){
+        textToSpeechUtil.speakNow("Restarting");
         gameLogic.start();
         startTimer();
         score = 0;
         resetVisualStimuli();
+        updateCurrentEventCounter();
+        updateScore();
+        updateSelectedStimuli();
     }
 
     public void onGameRestart() {
@@ -245,6 +276,8 @@ public class MainActivity extends AppCompatActivity {
         startTimer();
         score = 0;
         resetVisualStimuli();
+        updateScore();
+        updateCurrentEventCounter();
     }
 
     public void onVisualGuess(){
@@ -292,14 +325,17 @@ public class MainActivity extends AppCompatActivity {
                 if (visualStimuliPressed){
                     if (gameLogic.isCorrectGuess()){
                         score++;
-                    }
+                    } else position_match_btn.startAnimation(animation);
 
                     visualStimuliPressed = false;
                 } else if (auditoryStimuliPressed){
                     if (gameLogic.isCorrectGuess())
                         score++;
+                    else audio_match_btn.startAnimation(animation);
                     auditoryStimuliPressed = false;
                 }
+
+                gameLogic.makeMove();
 
                 if (gameLogic.gameOver()) {
 
@@ -307,7 +343,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG,"Score: "+score);
                     cancelTimer();
                 } else {
-                    gameLogic.makeMove();
                     if (gameLogic.isAuditory()){
                         String letter = String.valueOf(gameLogic.getLetter());
                         textToSpeechUtil.speakNow(letter);
